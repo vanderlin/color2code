@@ -38,6 +38,11 @@
 				<div class="container">
 					<div class="has-text-centered">
 						made with ❤️️ by <a href="https://www.vanderlin.cc">@vanderlin</a>
+						<br>
+						<br>
+						<a href="https://github.com/vanderlin/color2code">
+							<i class="fab fa-github"></i>
+						</a>
 					</div>
 				</div>
 			</div>
