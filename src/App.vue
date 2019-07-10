@@ -17,13 +17,19 @@
 							</div>
 
 						</div>
-						
+						<!-- <pre>
+							{{codes}}
+						</pre> -->
 						<div class="columns is-multiline">
 							<div class="column is-12">
-								<div class="field code-field" v-for="(item, title) in codes" :key="item.title">
-										<label class="label">{{title}}</label>
-										<div class="control" v-for="(code, j) in item.code" :key="j">
-<pre v-highlightjs><code :class="item.lang">{{code}}</code></pre>
+								<div class="field code-field" v-for="(item, i) in codes" :key="`${item.id}-${i}`">
+										<label class="label">{{item.title}}</label>
+										<div class="control is-expanded" v-for="(code, j) in item.code" :key="j">
+											<!-- too slow -->
+											<!-- <pre v-highlightjs><code :class="item.lang">{{code}}</code></pre> -->
+											<div class="code-line">
+												<code>{{code}}</code>
+											</div>
 											<span class="copy-code" href="copy" @click="copy(code, $event)">copy</span>
 										</div>
 								</div>
@@ -69,7 +75,8 @@ export default {
 	mixins: [],
 	data() {
 		return {
-			color: null
+			color: null,
+			codes: [],
 		}
 	},
 
@@ -81,6 +88,8 @@ export default {
 		randomColor() {
 			return tinycolor({r:_.random(255), g:_.random(255), b:_.random(255)});
 		},
+
+		// TODO
 		parseColor() {
 			/*var data = $("#color-input").val();
 			console.log("reading: "+data);
@@ -149,15 +158,12 @@ export default {
 			})
 
 			
-		}
-	},
-
-	computed: {
-		codes() {
+		},
+		colorToCode(value) {
 
 			let round = 1;
 			
-			let color = tinycolor(this.color);
+			let color = tinycolor(value);
 			
 			let rgb = color.toRgb();
 			
@@ -169,11 +175,15 @@ export default {
 			let rf = (rgb.r / 255.0).toFixed(round);
 			let gf = (rgb.g / 255.0).toFixed(round);
 			let bf = (rgb.b / 255.0).toFixed(round);
-			let af= (rgb.a).toFixed(round);
+			let af = (rgb.a).toFixed(round);
 
-			return {
-				'HTML/CSS': {
+			let index = color.toHexString();
+
+			return [
+				{
+					title: 'HTML/CSS',
 					lang: 'css',
+					id: index,
 					code: [
 						color.toHexString(),
 						color.toRgbString()+';',
@@ -182,15 +192,21 @@ export default {
 						`color: ${color.toString()}`
 					]
 				},
-				'iOS': {
+				{
+					title: 'iOS',
 					lang: 'c++',
+					id: index,
 					code: [`UIColor * color = [UIColor colorWithRed:${rf} green:${gf} blue:${bf} alpha:${af}];`]
 				},
-				'Objective C': {
+				{
+					title: 'Objective C',
+					id: index,
 					lang: 'Objective-C',
 					code: [`NSColor * color = [NSColor colorWithDeviceRed:${rf} green:${gf} blue:${bf} alpha:${af}];`]
 				},
-				'OpenFrameworks': {
+				{
+					title: 'OpenFrameworks',
+					id: index,
 					lang: 'c++',
 					code: [
 						`ofColor color = ofColor(${r}, ${g}, ${b}, ${a});`,
@@ -198,52 +214,64 @@ export default {
 						`ofSetColor(${r}, ${g}, ${b}, ${a});`,
 					]
 				},
-				'Cinder': {
+				{
+					title: 'Cinder',
+					id: index,
 					lang: 'c++',
 					code: [
 						`ci::ColorA color(CM_RGB, ${r}, ${g}, ${b}, ${a});`,
 					]
 				},
-				'Processing': {
+				{
+					title: 'Processing',
+					id: index,
 					lang: 'java',
 					code: [
 						`Color color = new Color(${r}, ${g}, ${b}, ${a});`,
 					]
 				},
-				'C/C++': {
+				{
+					title: 'C/C++',
 					lang: 'c++',
 					code: [
 						`float color[4] = {${rf}, ${gf}, ${bf}, ${af}};`,
 						`int color[4] = {${r}, ${g}, ${b}, ${a}};`,
 					]
 				},
-				'OpenGL': {
+				{
+					title: 'OpenGL',
+					id: index,
 					lang: 'c++',
 					code: [
 						`glColor3f(${rf}, ${gf}, ${bf}};`,
 						`glColor4f(${rf}, ${gf}, ${bf}, ${af}};`,
 					]
 				}
-	
-
-			}
+			]
 		}
 	},
 
-	watch: {
+	computed: {
+		
+	},
 
+	watch: {
+		color(val) {
+			this.codes = this.colorToCode(val);
+			console.log(val, this.codes[0].code[0]);
+		}
 	},
 
 	created() {
 		this.color = this.randomColor().toHexString();
-		
-		
+		this.codes = this.colorToCode(this.color);
 	},
 
 	destroyed() {
 	},
 
 	mounted() {
+		
 	}
 
 }
@@ -289,6 +317,11 @@ export default {
 pre {
 	padding: 0;
 }
+.code-line code {
+	width: 100%;
+	display: flex;
+	padding: 10px 15px;
+}
 .control {
 	margin-bottom: 10px;
 }
@@ -307,7 +340,7 @@ pre {
 	top: 0;
 	right: 0;
 	font-size: 12px;
-	padding: 8px;
+	padding: 11px;
 	opacity: 0;
 	color: #222;
 	transition: opacity 100ms;
