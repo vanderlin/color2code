@@ -10,7 +10,7 @@
     "bulma": "^0.7.5",
     "core-js": "^2.6.5",
     "highlight.js": "^9.15.8",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "sass-loader": "^7.1.0",
     "tinycolor2": "^1.4.1",
     "vue": "^2.6.10",
