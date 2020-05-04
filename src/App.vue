@@ -1,96 +1,96 @@
 
 <template>
-	<div id="app" :style="{'background-color':color}">
-		<section class="app-page">
-				<div class="container">
-					<div class="panel">
-						
-						<div class="columns is-multiline">
-							<div class="column is-12">
-								<ColorPicker v-model="color" :width="300" :height="300" :disabled="false"></ColorPicker>
-							</div>
+    <div id="app" :style="{'background-color':color}">
+        <section class="app-page">
+            <div class="container">
+                <div class="panel">
 
-							<div class="column is-4 is-offset-4 has-text-centered">
-								<h2 class="title">Color 2 Code</h2>
-								<input type="text" v-model="color" class="input is-medium color-input" placeholder="#000000">
-								<p class="help">you can enter hex values or rgb/rgba values 0-255</p>
-							</div>
+                    <div class="columns is-multiline">
+                        <div class="column is-12">
+                            <ColorPicker v-model="color" :width="300" :height="300" :disabled="false"></ColorPicker>
+                        </div>
 
-						</div>
-						<!-- <pre>
+                        <div class="column is-4 is-offset-4 has-text-centered">
+                            <h2 class="title">Color 2 Code</h2>
+                            <input type="text" v-model="color" class="input is-medium color-input" placeholder="#000000">
+                            <p class="help">you can enter hex values or rgb/rgba values 0-255</p>
+                        </div>
+
+                    </div>
+                    <!-- <pre>
 							{{codes}}
 						</pre> -->
-						<div class="columns is-multiline">
-							<div class="column is-12">
-								<div class="field code-field" v-for="(item, i) in codes" :key="`${item.id}-${i}`">
-										<label class="label">{{item.title}}</label>
-										<div class="control is-expanded" v-for="(code, j) in item.code" :key="j">
-											<!-- too slow -->
-											<!-- <pre v-highlightjs><code :class="item.lang">{{code}}</code></pre> -->
-											<div class="code-line">
-												<code>{{code}}</code>
-											</div>
-											<span class="copy-code" href="copy" @click="copy(code, $event)">copy</span>
-										</div>
-								</div>
-							</div>
-						</div>
+                    <div class="columns is-multiline">
+                        <div class="column is-12">
+                            <div class="field code-field" v-for="(item, i) in codes" :key="`${item.id}-${i}`">
+                                <label class="label">{{item.title}}</label>
+                                <div class="control is-expanded" v-for="(code, j) in item.code" :key="j">
+                                    <!-- too slow -->
+                                    <!-- <pre v-highlightjs><code :class="item.lang">{{code}}</code></pre> -->
+                                    <div class="code-line">
+                                        <code>{{code}}</code>
+                                    </div>
+                                    <span class="copy-code" href="copy" @click="copy(code, $event)">copy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-					</div>
-				</div>
-		</section>
-		<section>
-			<div class="footer">
-				<div class="container">
-					<div class="has-text-centered">
-						made with ❤️️ by <a href="https://www.vanderlin.cc">@vanderlin</a>
-						<br>
-						<br>
-						<a href="https://github.com/vanderlin/color2code">
-							<i class="fab fa-github"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="footer">
+                <div class="container">
+                    <div class="has-text-centered">
+                        made with ❤️️ by <a href="https://www.vanderlin.cc">@vanderlin</a>
+                        <br>
+                        <br>
+                        <a href="https://github.com/vanderlin/color2code">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </template>
 
 <script>
-import _ from 'lodash'; 
-import tinycolor from 'tinycolor2'; 
+import _ from 'lodash';
+import tinycolor from 'tinycolor2';
 import ColorPicker from 'vue-color-picker-wheel';
 let copyPhrases = [
-	'Code is copied!',
-	'Copied!',
-	'👩‍💻 copied!',
-	'👨‍💻 Got it!',
-	'Yeah! Copied!',
-	'Booom!',
-	'🐙 Copied'
+    'Code is copied!',
+    'Copied!',
+    '👩‍💻 copied!',
+    '👨‍💻 Got it!',
+    'Yeah! Copied!',
+    'Booom!',
+    '🐙 Copied'
 ];
 export default {
-	name: 'App',
-	props: {},
-	mixins: [],
-	data() {
-		return {
-			color: null,
-			codes: [],
-		}
-	},
+    name: 'App',
+    props: {},
+    mixins: [],
+    data() {
+        return {
+            color: null,
+            codes: [],
+        }
+    },
 
-	components: {
-		ColorPicker,
-	},
+    components: {
+        ColorPicker,
+    },
 
-	methods: {
-		randomColor() {
-			return tinycolor({r:_.random(255), g:_.random(255), b:_.random(255)});
-		},
+    methods: {
+        randomColor() {
+            return tinycolor({ r: _.random(255), g: _.random(255), b: _.random(255) });
+        },
 
-		// TODO
-		parseColor() {
+        // TODO
+        parseColor() {
 			/*var data = $("#color-input").val();
 			console.log("reading: "+data);
 			var out  = "";
@@ -147,202 +147,207 @@ export default {
 				data = cleanUpColor(data);
 				console.log("#hex input: "+data);
 			}*/
-		},
-		copy(code, $event) {
-			//  $event.target.select();
+        },
+        copy(code, $event) {
+            //  $event.target.select();
 
-			this.$copyText(code).then((e) => {
-				let toast = this.$toasted.show(_.sample(copyPhrases)).goAway(1500);
-			}, (e) => {
-				console.log(e)
-			})
+            this.$copyText(code).then((e) => {
+                let toast = this.$toasted.show(_.sample(copyPhrases)).goAway(1500);
+            }, (e) => {
+                console.log(e)
+            })
 
-			
-		},
-		colorToCode(value) {
 
-			let round = 1;
-			
-			let color = tinycolor(value);
-			
-			let rgb = color.toRgb();
-			
-			let r = (rgb.r).toFixed(round);
-			let g = (rgb.g).toFixed(round);
-			let b = (rgb.b).toFixed(round);
-			let a = (rgb.a * 255).toFixed(round);
+        },
+        colorToCode(value) {
 
-			let rf = (rgb.r / 255.0).toFixed(round);
-			let gf = (rgb.g / 255.0).toFixed(round);
-			let bf = (rgb.b / 255.0).toFixed(round);
-			let af = (rgb.a).toFixed(round);
+            let round = 1;
 
-			let index = color.toHexString();
+            let color = tinycolor(value);
 
-			return [
-				{
-					title: 'HTML/CSS',
-					lang: 'css',
-					id: index,
-					code: [
-						color.toHexString(),
-						color.toRgbString()+';',
-						`background-color: ${color.toString()}`,
-						`background: ${color.toString()}`,
-						`color: ${color.toString()}`
-					]
-				},
-				{
-					title: 'iOS',
-					lang: 'c++',
-					id: index,
-					code: [`UIColor * color = [UIColor colorWithRed:${rf} green:${gf} blue:${bf} alpha:${af}];`]
-				},
-				{
-					title: 'Objective C',
-					id: index,
-					lang: 'Objective-C',
-					code: [`NSColor * color = [NSColor colorWithDeviceRed:${rf} green:${gf} blue:${bf} alpha:${af}];`]
-				},
-				{
-					title: 'OpenFrameworks',
-					id: index,
-					lang: 'c++',
-					code: [
-						`ofColor color = ofColor(${r}, ${g}, ${b}, ${a});`,
-						`ofFloatColor color = ofFloatColor(${rf}, ${gf}, ${bf}, ${af});`,
-						`ofSetColor(${r}, ${g}, ${b}, ${a});`,
-					]
-				},
-				{
-					title: 'Cinder',
-					id: index,
-					lang: 'c++',
-					code: [
-						`ci::ColorA color(CM_RGB, ${r}, ${g}, ${b}, ${a});`,
-					]
-				},
-				{
-					title: 'Processing',
-					id: index,
-					lang: 'java',
-					code: [
-						`Color color = new Color(${r}, ${g}, ${b}, ${a});`,
-					]
-				},
-				{
-					title: 'C/C++',
-					lang: 'c++',
-					code: [
-						`float color[4] = {${rf}, ${gf}, ${bf}, ${af}};`,
-						`int color[4] = {${r}, ${g}, ${b}, ${a}};`,
-					]
-				},
-				{
-					title: 'OpenGL',
-					id: index,
-					lang: 'c++',
-					code: [
-						`glColor3f(${rf}, ${gf}, ${bf}};`,
-						`glColor4f(${rf}, ${gf}, ${bf}, ${af}};`,
-					]
-				}
-			]
-		}
-	},
+            let rgb = color.toRgb();
 
-	computed: {
-		
-	},
+            let r = (rgb.r).toFixed(round);
+            let g = (rgb.g).toFixed(round);
+            let b = (rgb.b).toFixed(round);
+            let a = (rgb.a * 255).toFixed(round);
 
-	watch: {
-		color(val) {
-			this.codes = this.colorToCode(val);
-			console.log(val, this.codes[0].code[0]);
-		}
-	},
+            let rf = (rgb.r / 255.0).toFixed(round);
+            let gf = (rgb.g / 255.0).toFixed(round);
+            let bf = (rgb.b / 255.0).toFixed(round);
+            let af = (rgb.a).toFixed(round);
 
-	created() {
-		this.color = this.randomColor().toHexString();
-		this.codes = this.colorToCode(this.color);
-	},
+            let index = color.toHexString();
 
-	destroyed() {
-	},
+            return [
+                {
+                    title: 'HTML/CSS',
+                    lang: 'css',
+                    id: index,
+                    code: [
+                        color.toHexString(),
+                        color.toRgbString() + ';',
+                        `background-color: ${color.toString()}`,
+                        `background: ${color.toString()}`,
+                        `color: ${color.toString()}`
+                    ]
+                },
+                {
+                    title: 'iOS',
+                    lang: 'c++',
+                    id: index,
+                    code: [`UIColor * color = [UIColor colorWithRed:${rf} green:${gf} blue:${bf} alpha:${af}];`]
+                },
+                {
+                    title: 'Swift',
+                    id: index,
+                    lang: 'Swift',
+                    code: [`let color = UIColor(red: {rf}, green:${gf}, blue:${bf}, alpha:${af})`]
+                },
+                {
+                    title: 'Objective C',
+                    id: index,
+                    lang: 'Objective-C',
+                    code: [`NSColor * color = [NSColor colorWithDeviceRed:${rf} green:${gf} blue:${bf} alpha:${af}];`]
+                },
+                {
+                    title: 'OpenFrameworks',
+                    id: index,
+                    lang: 'c++',
+                    code: [
+                        `ofColor color = ofColor(${r}, ${g}, ${b}, ${a});`,
+                        `ofFloatColor color = ofFloatColor(${rf}, ${gf}, ${bf}, ${af});`,
+                        `ofSetColor(${r}, ${g}, ${b}, ${a});`,
+                    ]
+                },
+                {
+                    title: 'Cinder',
+                    id: index,
+                    lang: 'c++',
+                    code: [
+                        `ci::ColorA color(CM_RGB, ${r}, ${g}, ${b}, ${a});`,
+                    ]
+                },
+                {
+                    title: 'Processing',
+                    id: index,
+                    lang: 'java',
+                    code: [
+                        `Color color = new Color(${r}, ${g}, ${b}, ${a});`,
+                    ]
+                },
+                {
+                    title: 'C/C++',
+                    lang: 'c++',
+                    code: [
+                        `float color[4] = {${rf}, ${gf}, ${bf}, ${af}};`,
+                        `int color[4] = {${r}, ${g}, ${b}, ${a}};`,
+                    ]
+                },
+                {
+                    title: 'OpenGL',
+                    id: index,
+                    lang: 'c++',
+                    code: [
+                        `glColor3f(${rf}, ${gf}, ${bf}};`,
+                        `glColor4f(${rf}, ${gf}, ${bf}, ${af}};`,
+                    ]
+                }
+            ]
+        }
+    },
 
-	mounted() {
-		
-	}
+    computed: {
+
+    },
+
+    watch: {
+        color(val) {
+            this.codes = this.colorToCode(val);
+            console.log(val, this.codes[0].code[0]);
+        }
+    },
+
+    created() {
+        this.color = this.randomColor().toHexString();
+        this.codes = this.colorToCode(this.color);
+    },
+
+    destroyed() {
+    },
+
+    mounted() {
+
+    }
 
 }
 </script>
 
 <style lang="scss">
-@import 'main.scss';
+@import "main.scss";
 #app {
-	min-height: 100vh;
-	height: 100%;
-	width: 100%;
-	background: red;
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    background: red;
 }
 #color-wheel {
-	margin: 0 auto;
+    margin: 0 auto;
 }
 .color-input {
-
 }
 .app-page {
-	display: flex;
-	max-width: 1024px;
-	margin: 0 auto;
-	.panel {
-		margin-top: 100px;
-		margin-bottom: 100px;
-		border: 1px solid #fff;
-		padding: 20px;
-		border-radius: 5px;
-		background: #fff;
-	}
+    display: flex;
+    max-width: 1024px;
+    margin: 0 auto;
+    .panel {
+        margin-top: 100px;
+        margin-bottom: 100px;
+        border: 1px solid #fff;
+        padding: 20px;
+        border-radius: 5px;
+        background: #fff;
+    }
 }
 .code-field {
-	.control {
-			&:hover {
-				.copy-code {
-					cursor: pointer;
-					opacity: 1;
-				}
-		}
-	}
+    .control {
+        &:hover {
+            .copy-code {
+                cursor: pointer;
+                opacity: 1;
+            }
+        }
+    }
 }
 pre {
-	padding: 0;
+    padding: 0;
 }
 .code-line code {
-	width: 100%;
-	display: flex;
-	padding: 10px 15px;
+    width: 100%;
+    display: flex;
+    padding: 10px 15px;
 }
 .control {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .footer {
-	background: transparent;
-	color: white;
-	a {
-		color: white;
-		&:hover {
-			text-decoration: underline;
-		}
-	}
+    background: transparent;
+    color: white;
+    a {
+        color: white;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 .copy-code {
-	position: absolute;
-	top: 0;
-	right: 0;
-	font-size: 12px;
-	padding: 11px;
-	opacity: 0;
-	color: #222;
-	transition: opacity 100ms;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    padding: 11px;
+    opacity: 0;
+    color: #222;
+    transition: opacity 100ms;
 }
 </style>
