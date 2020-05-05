@@ -202,7 +202,7 @@ export default {
                     title: 'Swift',
                     id: index,
                     lang: 'Swift',
-                    code: [`let color = UIColor(red: {rf}, green:${gf}, blue:${bf}, alpha:${af})`]
+                    code: [`let color = UIColor(red:${rf}, green:${gf}, blue:${bf}, alpha:${af})`]
                 },
                 {
                     title: 'Objective C',
