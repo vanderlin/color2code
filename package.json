@@ -9,7 +9,7 @@
   "dependencies": {
     "bulma": "^0.7.5",
     "core-js": "^2.6.5",
-    "highlight.js": "^9.15.8",
+    "highlight.js": "^10.1.2",
     "lodash": "^4.17.11",
     "sass-loader": "^7.1.0",
     "tinycolor2": "^1.4.1",
